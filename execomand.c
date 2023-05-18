@@ -8,7 +8,7 @@ void execmd(char **argv){
         command = argv[0];
 
         if (execve(command, argv, NULL) == -1){
-            perror("Error:");
+            perror("./hsh");
         }
     }
     
