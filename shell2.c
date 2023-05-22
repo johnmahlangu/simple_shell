@@ -33,9 +33,13 @@ int main(int argc, char *argv[]) {
         }
 
         char *token = strtok(command, delim);
+	
+	if (token != NULL && _strcmp(token, "exit") == 0) {
+            break;
+        }
 
         num_args = 0;
-
+  	
         while (token != NULL && num_args < maxArg - 1) {
             args[num_args] = token;
             num_args++;
