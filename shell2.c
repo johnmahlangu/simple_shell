@@ -12,27 +12,6 @@
 
 extern char **environ;
 
-char *get_command_path(const char *command) {
-    char *path_env = _getenv("PATH");
-    char *path = strtok(path_env, ":");
-    char *command_path = NULL;
-
-    while (path != NULL) {
-        char *temp_path = malloc(strlen(path) + strlen(command) + 2);
-        _sprintf(temp_path, "%s/%s", path, command);
-
-        if (access(temp_path, F_OK) == 0) {
-            command_path = temp_path;
-            break;
-        }
-
-        free(temp_path);
-        path = strtok(NULL, ":");
-    }
-
-    return command_path;
-}
-
 int main(int argc, char *argv[]) {
     char *command = NULL;
     size_t command_length = 0;
