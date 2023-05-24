@@ -13,18 +13,25 @@
 extern char **environ;
 
 int main(int argc, char *argv[]) {
-    char *command = NULL;
-    size_t command_length = 0;
-    ssize_t n;
-    int status;
-    char *delim = " \n";
-    unsigned int maxArg = 12;
-    char *args[maxArg];
-    int num_args = 0;
+    	char *command = NULL;
+    	size_t command_length = 0;
+    	ssize_t n;
+   	int status;
+    	char *delim = " \n";
+    	unsigned int maxArg = 12;
+    	unsigned int num_args = 0;
+	char *token;
+    	char **args = (char **)malloc(maxArg * sizeof(char *));
+	char *command_path;
+	pid_t pid;
 
-    while (1) {
-        printf("#cisfun$ ");
-        fflush(stdout);
+    	if (args == NULL) {		
+        	perror("Memory allocation failed");
+        	return (1);
+    	}
+    	while (1) {
+        	printf("#cisfun$ ");
+        	fflush(stdout);
 
         n = getline(&command, &command_length, stdin);
 
@@ -32,7 +39,7 @@ int main(int argc, char *argv[]) {
             break;
         }
 
-        char *token = strtok(command, delim);
+        token = strtok(command, delim);
 	
 	if (token != NULL && _strcmp(token, "exit") == 0) {
             break;
@@ -49,17 +56,17 @@ int main(int argc, char *argv[]) {
         args[num_args] = NULL;
 
         if (num_args == 0) {
-            continue;  // No command provided, continue to the next iteration
+            continue;
         }
 
-        char *command_path = get_command_path(args[0]);
+        command_path = get_command_path(args[0]);
 
         if (command_path == NULL) {
             printf("Command not found: %s\n", args[0]);
-            continue;  // Command doesn't exist, continue to the next iteration
+            continue;
         }
 
-        pid_t pid = fork();
+        pid = fork();
 
         if (pid == -1) {
             perror("Unsuccessful");
@@ -67,7 +74,6 @@ int main(int argc, char *argv[]) {
             exit(1);
         } else if (pid == 0) {
             if (argc > 1) {
-                // Concatenate additional command line arguments with the existing ones
                 int i;
                 for (i = 0; i < argc - 1 && num_args < maxArg - 1; i++) {
                     args[num_args] = argv[i + 1];
@@ -85,8 +91,7 @@ int main(int argc, char *argv[]) {
             free(command_path);
         }
 
-        // Restore the original PATH
-        setenv("PATH", "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin", 1);
+        _setenv("PATH", "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin", 1);
     }
 
     free(command);

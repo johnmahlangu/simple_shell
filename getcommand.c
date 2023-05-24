@@ -13,21 +13,30 @@
 extern char **environ;
 
 char *get_command_path(const char *command) {
-    // Check if the command is an absolute path
-    if (command[0] == '/') {
-        if (access(command, F_OK) == 0) {
-            return strdup(command);
-        } else {
+
+	char *path_env;
+	char *path;
+	char *command_path = NULL;
+	char *temp_path;
+
+    	if (command[0] == '/') {
+        	if (access(command, F_OK) == 0) {
+            		return strdup(command);
+        } 
+	else {
             return NULL;
         }
-    }
 
-    char *path_env = _getenv("PATH");
-    char *path = strtok(path_env, ":");
-    char *command_path = NULL;
+    	}
 
-    while (path != NULL) {
-        char *temp_path = malloc(strlen(path) + strlen(command) + 2);
+   	path_env = _getenv("PATH");
+    	path = strtok(path_env, ":");
+    	command_path = NULL;
+
+    	while (path != NULL) {
+
+        temp_path = malloc(_strlen(path) + str_len(command) + 2);
+
         _sprintf(temp_path, "%s/%s", path, command);
 
         if (access(temp_path, F_OK) == 0) {

@@ -1,19 +1,21 @@
-#include <stdio.h>
 #include "main.h"
+#include <stdio.h>
 #include <string.h>
 
+extern char **environ;
+
 char *_getenv(const char *name) {
-    extern char **environ;
-    char *env_var;
-    size_t name_length = strlen(name);
+    char **env = environ;
+    while (*env != NULL) {
+        char *env_var = *env;
+        int len = str_len(name);
 
-    for (char **env = environ; *env != NULL; env++) {
-        env_var = *env;
-
-        if (strncmp(env_var, name, name_length) == 0 && env_var[name_length] == '=') {
-            return &env_var[name_length + 1];
+        if (_strncmp(env_var, name, len) == 0 && env_var[len] == '=') {
+            return &env_var[len + 1];
         }
+
+        env++;
     }
 
-    return NULL;  // Environment variable not found
+    return NULL;
 }

@@ -7,21 +7,17 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdarg.h>
 
-
-typedef struct list
-{
-	char *string;
-	int number;
-	struct list *next;
-}list_t;
-
-typedef struct info
-{
-	list_t *envi;
-	list_t **environ;
-}info_t;
-char *starts(const char *strsearch, const char *strfind);
-void execmd(char **argv);
 char *_getenv(const char *name);
+const char *_strchr(const char *s, char c);
+int _setenv(const char *name, const char *value, int overwrite);
+char *str_chr(char *s, char c);
+int _strcmp(char *s1, char *s2);
+int _sprintf(char *str, const char *format, ...);
+char *get_command_path(const char *command);
+int str_len(const char *s);
+int _strncmp(const char *str1, const char *str2, size_t n);
+int _putenv(const char *string);
+int _strlen(char *s);
 #endif
