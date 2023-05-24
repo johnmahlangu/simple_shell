@@ -13,25 +13,27 @@
 extern char **environ;
 
 int main(int argc, char *argv[]) {
-    	char *command = NULL;
-    	size_t command_length = 0;
-    	ssize_t n;
-   	int status;
-    	char *delim = " \n";
-    	unsigned int maxArg = 12;
-    	unsigned int num_args = 0;
-	char *token;
-    	char **args = (char **)malloc(maxArg * sizeof(char *));
-	char *command_path;
-	pid_t pid;
+    char *program_name = argv[0]; 
+    char *command = NULL;
+    size_t command_length = 0;
+    ssize_t n;
+    int status;
+    char *delim = " \n";
+    unsigned int maxArg = 12;
+    unsigned int num_args = 0;
+    char *token;
+    char **args = (char **)malloc(maxArg * sizeof(char *));
+    char *command_path;
+    pid_t pid;
 
-    	if (args == NULL) {		
-        	perror("Memory allocation failed");
-        	return (1);
-    	}
-    	while (1) {
-        	printf("#cisfun$ ");
-        	fflush(stdout);
+    if (args == NULL) {
+        perror("Memory allocation failed");
+        return (1);
+    }
+
+    while (1) {
+        _printf("%s$ ", program_name);
+        fflush(stdout);
 
         n = getline(&command, &command_length, stdin);
 
@@ -40,13 +42,13 @@ int main(int argc, char *argv[]) {
         }
 
         token = strtok(command, delim);
-	
-	if (token != NULL && _strcmp(token, "exit") == 0) {
+
+        if (token != NULL && _strcmp(token, "exit") == 0) {
             break;
         }
 
         num_args = 0;
-  	
+
         while (token != NULL && num_args < maxArg - 1) {
             args[num_args] = token;
             num_args++;
@@ -62,7 +64,7 @@ int main(int argc, char *argv[]) {
         command_path = get_command_path(args[0]);
 
         if (command_path == NULL) {
-            printf("Command not found: %s\n", args[0]);
+            _printf("%s: Command not found: %s\n", program_name, args[0]);
             continue;
         }
 
