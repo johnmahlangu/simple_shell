@@ -11,6 +11,7 @@
 
 char *_getenv(const char *name);
 const char *_strchr(const char *s, char c);
+int _printf(const char *format, ...);
 int _setenv(const char *name, const char *value, int overwrite);
 char *str_chr(char *s, char c);
 int _strcmp(char *s1, char *s2);
